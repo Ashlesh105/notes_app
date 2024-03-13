@@ -135,14 +135,14 @@ class _EngiNotesHubState extends State<EngiNotesHub> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20, top: 10),
                           child: Container(
-                            decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.deepPurple,Colors.blueAccent]),borderRadius: BorderRadius.circular(15)),
+                            decoration: BoxDecoration(gradient: const LinearGradient(colors: [Colors.deepPurple,Colors.blueAccent]),borderRadius: BorderRadius.circular(15)),
                             child: ElevatedButton(
                               onPressed: validateField,
-                              child: const Text(
+                              style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
+                              child:  const Text(
                                 'Login',
                                 style: TextStyle(color: Colors.white),
                               ),
-                              style: ElevatedButton.styleFrom(primary: Colors.transparent),
                             ),
                           ),
                         )
