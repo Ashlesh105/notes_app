@@ -168,14 +168,18 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
+              Container(
+                height: 100,width: 300,
+                child: TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Title',border: OutlineInputBorder()),
+                ),
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                 onPressed: pickPDF,
-                child: const Text('Pick PDF'),
+                child: const Text('Pick PDF',style: TextStyle(color: Colors.white),),
               ),
               const SizedBox(height: 8.0),
               if (pdfPath != null)
@@ -185,8 +189,9 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
                 ),
               const SizedBox(height: 16.0),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                 onPressed: uploadNote,
-                child: const Text('Upload Note'),
+                child: const Text('Upload Note',style: TextStyle(color: Colors.white),),
               ),
             ],
           ),

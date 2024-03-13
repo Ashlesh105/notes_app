@@ -112,7 +112,7 @@ class _CivilState extends State<Civil> {
       ValueChanged<String?> onChanged,
       ) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

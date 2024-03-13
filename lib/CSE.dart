@@ -113,7 +113,7 @@ class _CompSciState extends State<CompSci> {
     ValueChanged<String?> onChanged,
   ) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding:  EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
