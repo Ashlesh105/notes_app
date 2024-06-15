@@ -5,7 +5,6 @@ import 'database.dart';
 import 'databasehelperclass.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
-import 'downloads.dart';
 
 void main() {
   //wait NotesDatabaseHelper.instance.init();
@@ -67,7 +66,7 @@ class _EleComState extends State<EleCom> {
         title: Text('${widget.branch} Notes'),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 50, left: 5, right: 5),
+        padding: EdgeInsets.only(top: 50, left: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -180,14 +179,6 @@ class _EleComState extends State<EleCom> {
                         await downloadPDF(currentNote.pdfPath);
                         downloadedPDFs.add(currentNote.pdfPath);
 
-                        // Navigate to the DownloadedPDFsPage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DownloadedPDFsPage(downloadedPDFs: downloadedPDFs),
-                          ),
-                        );
                       },
                       icon: Icon(Icons.download_for_offline_rounded))),
             );
@@ -211,7 +202,7 @@ class _EleComState extends State<EleCom> {
         String fileName = pdfPath.split('/').last;
 
         // Create a new file path in the documents directory
-        String filePath = '$documentsPath/$fileName';
+        String filePath = '/storage/emulated/0/Download/$fileName';
 
         // Copy the file to the new path
         await file.copy(filePath);

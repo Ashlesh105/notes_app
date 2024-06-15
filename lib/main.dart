@@ -1,16 +1,18 @@
+import 'package:enginoteshub/splashScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'databasehelperclass.dart';
 import 'deptPage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure that Flutter is initialized.
-
   // Initialize the database
+
   await  NotesDatabaseHelper.instance.init();
   runApp(const MaterialApp(
-    home: EngiNotesHub(),
+    home: splashScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
@@ -28,6 +30,7 @@ class _EngiNotesHubState extends State<EngiNotesHub> {
   void validateField() {
     print('Inside validate');
     if (_formKey.currentState == null) {
+
       print('Form state is null');
       return;
     }
@@ -60,12 +63,10 @@ class _EngiNotesHubState extends State<EngiNotesHub> {
           child: Column(
             children: [
               Container(
+          height: MediaQuery.of(context).size.height * 0.3,
                   decoration: const BoxDecoration(color: Colors.transparent),
-                  child: Image.asset(
-                    'assets/Engi.png',
-                    height: MediaQuery.of(context).size.height * 0.3,
-
-                  )),
+                  child: Lottie.asset('assets/splash.json'),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Container(
@@ -116,6 +117,7 @@ class _EngiNotesHubState extends State<EngiNotesHub> {
                               labelText: 'Student Usn',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
+
                               ),
                             ),
                             validator: (value) {
@@ -139,9 +141,9 @@ class _EngiNotesHubState extends State<EngiNotesHub> {
                             child: ElevatedButton(
                               onPressed: validateField,
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
-                              child:  const Text(
+                              child:   Text(
                                 'Login',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white,fontFamily: 'PoetsenOne'),
                               ),
                             ),
                           ),

@@ -17,7 +17,7 @@ class NotesDatabaseHelper {
   // Make this a singleton class
   NotesDatabaseHelper._privateConstructor();
   static final NotesDatabaseHelper instance =
-  NotesDatabaseHelper._privateConstructor();
+      NotesDatabaseHelper._privateConstructor();
 
   late Database _database;
 
@@ -48,12 +48,14 @@ class NotesDatabaseHelper {
     if (oldVersion < 2) {
       // Check if the column exists before trying to add it
       List<Map<String, dynamic>> columns =
-      await db.rawQuery("PRAGMA table_info($tableNotes);");
-      bool columnExists = columns.any((column) => column['name'] == columnPdfPath);
+          await db.rawQuery("PRAGMA table_info($tableNotes);");
+      bool columnExists =
+          columns.any((column) => column['name'] == columnPdfPath);
 
       if (!columnExists) {
         // If upgrading from version 1 to version 2, add the pdfPath column
-        await db.execute('ALTER TABLE $tableNotes ADD COLUMN $columnPdfPath TEXT');
+        await db
+            .execute('ALTER TABLE $tableNotes ADD COLUMN $columnPdfPath TEXT');
       }
 
       // Check if the "branches" column exists before trying to add it
@@ -61,18 +63,18 @@ class NotesDatabaseHelper {
 
       if (!columnExists) {
         // If upgrading from version 1 to version 2, add the branches column
-        await db.execute('ALTER TABLE $tableNotes ADD COLUMN $columnBranch TEXT');
+        await db
+            .execute('ALTER TABLE $tableNotes ADD COLUMN $columnBranch TEXT');
       }
 
       // Add the missing columns
       await db.execute('ALTER TABLE $tableNotes ADD COLUMN $columnYear TEXT');
       await db.execute('ALTER TABLE $tableNotes ADD COLUMN $columnScheme TEXT');
-      await db.execute('ALTER TABLE $tableNotes ADD COLUMN $columnSemester TEXT');
+      await db
+          .execute('ALTER TABLE $tableNotes ADD COLUMN $columnSemester TEXT');
     }
     // Add more upgrade steps if needed for future versions
   }
-
-
 
   Future<void> _createDatabase(Database db, int version) async {
     await db.execute('''
@@ -97,7 +99,8 @@ class NotesDatabaseHelper {
       String branch, String year, String scheme, String semester) async {
     final Database db = await instance.database;
     final List<Map<String, dynamic>> maps = await db.query(tableNotes,
-        where: '$columnBranch = ? AND $columnYear = ? AND $columnScheme = ? AND $columnSemester = ?',
+        where:
+            '$columnBranch = ? AND $columnYear = ? AND $columnScheme = ? AND $columnSemester = ?',
         whereArgs: [branch, year, scheme, semester]);
 
     return List.generate(maps.length, (index) {
@@ -112,6 +115,4 @@ class NotesDatabaseHelper {
       );
     });
   }
-
-
 }

@@ -1,11 +1,10 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database.dart';
 import 'databasehelperclass.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-
-import 'downloads.dart';
 
 void main() {
   //wait NotesDatabaseHelper.instance.init();
@@ -35,6 +34,7 @@ class _CompSciState extends State<CompSci> {
   List<String> semesters = ['Semester', '1', '2', '3', '4', '5', '6', '7', '8'];
   List<String> downloadedPDFs = [];
   List<Note> filteredNotes = [];
+
   @override
   void initState() {
     super.initState();
@@ -59,7 +59,6 @@ class _CompSciState extends State<CompSci> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +66,7 @@ class _CompSciState extends State<CompSci> {
         title: Text('${widget.branch} Notes'),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 50, left: 5, right: 5),
+        padding: EdgeInsets.only(top: 50, left: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -81,20 +80,20 @@ class _CompSciState extends State<CompSci> {
                 }),
                 SizedBox(height: 5.0),
                 _buildDropdown('Select Scheme', schemes, selectedScheme,
-                    (value) {
-                  setState(() {
-                    selectedScheme = value!;
-                    getFilteredNotes();
-                  });
-                }),
+                        (value) {
+                      setState(() {
+                        selectedScheme = value!;
+                        getFilteredNotes();
+                      });
+                    }),
                 SizedBox(height: 5.0),
                 _buildDropdown('Select Semester', semesters, selectedSemester,
-                    (value) {
-                  setState(() {
-                    selectedSemester = value!;
-                    getFilteredNotes();
-                  });
-                }),
+                        (value) {
+                      setState(() {
+                        selectedSemester = value!;
+                        getFilteredNotes();
+                      });
+                    }),
                 SizedBox(height: 5.0),
               ],
             ),
@@ -106,14 +105,12 @@ class _CompSciState extends State<CompSci> {
     );
   }
 
-  Widget _buildDropdown(
-    String label,
-    List<String> items,
-    String value,
-    ValueChanged<String?> onChanged,
-  ) {
+  Widget _buildDropdown(String label,
+      List<String> items,
+      String value,
+      ValueChanged<String?> onChanged,) {
     return Container(
-      padding:  EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -167,11 +164,12 @@ class _CompSciState extends State<CompSci> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PDFView(
-                          filePath: currentNote.pdfPath,
-                          enableSwipe: true,
-                          swipeHorizontal: false,
-                        ),
+                        builder: (context) =>
+                            PDFView(
+                              filePath: currentNote.pdfPath,
+                              enableSwipe: true,
+                              swipeHorizontal: false,
+                            ),
                       ),
                     );
                   },
@@ -180,14 +178,6 @@ class _CompSciState extends State<CompSci> {
                         await downloadPDF(currentNote.pdfPath);
                         downloadedPDFs.add(currentNote.pdfPath);
 
-                        // Navigate to the DownloadedPDFsPage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DownloadedPDFsPage(downloadedPDFs: downloadedPDFs),
-                          ),
-                        );
                       },
                       icon: Icon(Icons.download_for_offline_rounded))),
             );
@@ -196,6 +186,7 @@ class _CompSciState extends State<CompSci> {
       );
     }
   }
+
   Future<void> downloadPDF(String pdfPath) async {
     try {
       // Read the local file
@@ -208,10 +199,12 @@ class _CompSciState extends State<CompSci> {
         String documentsPath = appDocDir.path;
 
         // Extract the file name from the path
-        String fileName = pdfPath.split('/').last;
+        String fileName = pdfPath
+            .split('/')
+            .last;
 
         // Create a new file path in the documents directory
-        String filePath = '$documentsPath/$fileName';
+        String filePath = '/storage/emulated/0/Download/$fileName';
 
         // Copy the file to the new path
         await file.copy(filePath);
@@ -224,55 +217,4 @@ class _CompSciState extends State<CompSci> {
       print('Error downloading PDF: $e');
     }
   }
-
-/*Future<void> _downloadPDF(String pdfUrl) async {
-    try {
-      // Download the PDF file as bytes
-      List<int> pdfBytes = await downloadPDF(pdfUrl);
-
-      // Get the application documents directory
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
-
-      // Create a new file path in the documents directory
-      String newFilePath = '$appDocPath/${DateTime.now().millisecondsSinceEpoch}.pdf';
-
-      // Write the downloaded bytes to the new file
-      await File(newFilePath).writeAsBytes(pdfBytes);
-
-      // Open the PDF using flutter_pdfview
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PDFView(
-            filePath: newFilePath,
-            enableSwipe: true,
-            swipeHorizontal: false,
-          ),
-        ),
-      );
-    } catch (e) {
-      print('Error downloading PDF: $e');
-    }
-  }
-
-  //Future<List<int>> downloadPDF(String pdfUrl) async {
-    try {
-      // Make a GET request to the PDF URL
-      final response = await http.get(Uri.parse(pdfUrl));
-
-      // Check if the request was successful
-      if (response.statusCode == 200) {
-        // Return the response body as bytes
-        return response.bodyBytes;
-      } else {
-        // Handle the error
-        throw Exception('Failed to load PDF');
-      }
-    } catch (e) {
-      print('Error downloading PDF: $e');
-      throw Exception('Failed to load PDF');
-    }
-  }*/
-
 }

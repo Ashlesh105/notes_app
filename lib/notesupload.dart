@@ -54,8 +54,7 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
   }
 
   Future<void> uploadNote() async {
-    final String title = titleController.text;
-
+    final String title = basename(pdfPath!);
     if (title.isNotEmpty && pdfPath != null) {
       final Note note = Note(
         title: title,
@@ -70,7 +69,10 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
       final int result = await NotesDatabaseHelper.instance.insertNote(note);
 
       if (result > 0) {
-        print('Note uploaded successfully!');
+        print(
+          'Note uploaded successfully!',
+        );
+        print('${pdfPath}');
         await Future.delayed(const Duration(seconds: 2));
 
         // Fetch the note from the database
@@ -96,7 +98,6 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
     clearForm();
   }
 
-
   void clearForm() {
     print('\nclear from');
     setState(() {
@@ -113,8 +114,8 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Note Upload'),
-      ),
+          title: const Text('Note Upload',
+              style: TextStyle(fontFamily: 'Agbalumo'))),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 5.0, left: 5, right: 5),
@@ -128,40 +129,44 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
                     SizedBox(
                       width: 40,
                     ),
-                   Column(
-                     children: [
-                       const SizedBox(height: 16.0),
-                       _buildDropdown('Select Branch', branches, selectedBranch,
-                               (value) {
-                             setState(() {
-                               selectedBranch = value!;
-                             });
-                           }),
-                       const SizedBox(height: 16.0),
-                       _buildDropdown('Select Year', years, selectedYear, (value) {
-                         setState(() {
-                           selectedYear = value!;
-                         });
-                       }),
-                     ],
-                   ),
-                    SizedBox(width: 10,),
+                    Column(
+                      children: [
+                        const SizedBox(height: 16.0),
+                        _buildDropdown(
+                            'Select Branch', branches, selectedBranch, (value) {
+                          setState(() {
+                            selectedBranch = value!;
+                          });
+                        }),
+                        const SizedBox(height: 16.0),
+                        _buildDropdown('Select Year', years, selectedYear,
+                            (value) {
+                          setState(() {
+                            selectedYear = value!;
+                          });
+                        }),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Column(
                       children: [
                         const SizedBox(height: 16.0),
                         _buildDropdown('Select Scheme', schemes, selectedScheme,
-                                (value) {
-                              setState(() {
-                                selectedScheme = value!;
-                              });
-                            }),
+                            (value) {
+                          setState(() {
+                            selectedScheme = value!;
+                          });
+                        }),
                         const SizedBox(height: 16.0),
-                        _buildDropdown('Select Semester', semesters, selectedSemester,
-                                (value) {
-                              setState(() {
-                                selectedSemester = value!;
-                              });
-                            }),
+                        _buildDropdown(
+                            'Select Semester', semesters, selectedSemester,
+                            (value) {
+                          setState(() {
+                            selectedSemester = value!;
+                          });
+                        }),
                       ],
                     ),
                   ],
@@ -169,29 +174,39 @@ class _NoteUploadScreenState extends State<NoteUploadScreen> {
               ),
               const SizedBox(height: 16.0),
               Container(
-                height: 100,width: 300,
-                child: TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(labelText: 'Title',border: OutlineInputBorder()),
-                ),
-              ),
-              const SizedBox(height: 16.0),
+                  alignment: Alignment.center,
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: pdfPath != null
+                      ? Text('${basename(pdfPath!)}')
+                      : Text(
+                          'Pick a pdf',
+                          style: TextStyle(fontFamily: 'PoetsenOne'),
+                        )),
+              SizedBox(height: 10,),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple),
                 onPressed: pickPDF,
-                child: const Text('Pick PDF',style: TextStyle(color: Colors.white),),
+                child: const Text(
+                  'Pick PDF',
+                  style:
+                      TextStyle(color: Colors.white, fontFamily: 'PoetsenOne'),
+                ),
               ),
               const SizedBox(height: 8.0),
-              if (pdfPath != null)
-                Text(
-                  'Selected PDF: ${basename(pdfPath!)}',
-                  style: const TextStyle(fontSize: 16.0),
-                ),
-              const SizedBox(height: 16.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple),
                 onPressed: uploadNote,
-                child: const Text('Upload Note',style: TextStyle(color: Colors.white),),
+                child: const Text(
+                  'Upload Note',
+                  style:
+                      TextStyle(color: Colors.white, fontFamily: 'PoetsenOne'),
+                ),
               ),
             ],
           ),
